@@ -1,0 +1,17 @@
+Useful Commands:
+
+git push --force origin main
+
+https://stackoverflow.com/questions/42830557/git-remote-add-origin-vs-remote-set-url-origin
+
+git init
+
+git add .
+
+git commit -m "more changes"
+
+git remote add origin "https://github.com/maurerryan/recipe-frontend.git"
+
+git branch -M main
+
+git push -u origin main
