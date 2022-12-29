@@ -3,32 +3,43 @@ import { BrowserRouter as Router, useParams } from 'react-router-dom';
 import plate from '../plate.jpg';
 import IngredientList from './IngredientList';
 import InstructionList from './InstructionList';
-
+import { ClipLoader } from 'react-spinners';
+import axiosConfig from '../helpers/axiosConfig';
 
 export default function RecipeCard() {
 
-
-
-//const [id, setId] = useState(1);
 const [recipe, setRecipe] = useState(null);
+const [isLoading, setIsLoading] = useState(true);
 const params = useParams();
 
-console.log(params.id);
 
 useEffect(() => {
-    
-    fetch(`http://localhost/api/recipes/${params.id}`)
-    .then(response => response.json())
-    .then(results => {
-
-        console.log(results);
-        setRecipe(results);
-    });
+    getRecipe();
 }, []);
 
-return (
-    <div className="content" class="p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-5">
 
+function getRecipe() {
+    axiosConfig
+    .get(`recipes/${params.id}`)
+    .then(response => {
+        setRecipe(response.data);
+        setIsLoading(false);
+    })
+    .catch(error => {
+        console.log(error);
+        setIsLoading(false);
+    });
+}
+
+return (
+    <div className="container mx-auto">
+        {isLoading && (
+            <ClipLoader color="rgba(249, 115, 22, 1)" />
+        )}
+    
+    {/* <div className="content" class="p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-5"> */}
+    {/* <div className="container mx-auto"> */}
+    
     {recipe && (
     
     <div class="rounded overflow-hidden shadow-lg">
@@ -63,7 +74,8 @@ return (
     </div>
    
     )}
-
+  
     </div>
+
 );
 }

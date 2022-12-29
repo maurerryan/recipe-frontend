@@ -3,7 +3,8 @@ import { useParams, Navigate, useNavigate } from 'react-router-dom';
 import plate from '../plate.jpg';
 import { validateFields } from '../validation';
 
-import axiosConfig from 'axios';
+// import axiosConfig from 'axios';
+import axiosConfig from '../helpers/axiosConfig';
 import classNames from 'classnames';
 import ReturnPreviousButton from '../components/ReturnPreviousButton';
 
@@ -114,7 +115,7 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
                             };
 
             let options = {
-                              baseURL: 'http://localhost/api/ingredients',
+                              baseURL: '/ingredients',
                               url: '',
                               method: 'post',
                               data: recordData

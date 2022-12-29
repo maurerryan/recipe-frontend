@@ -14,7 +14,6 @@ const recipe_id = props.id;
 //console.log(params.id);
 
 useEffect(() => {
-    
     //fetch(`http://localhost/api/recipes/${params.id}`)
     fetch(`http://localhost/api/recipes/${recipe_id}`)
     .then(response => response.json())

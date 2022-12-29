@@ -3,7 +3,8 @@ import { Navigate } from "react-router-dom";
 import plate from '../plate.jpg';
 import { validateFields } from '../validation';
 
-import axiosConfig from 'axios';
+//import axiosConfig from 'axios';
+import axiosConfig from '../helpers/axiosConfig';
 import classNames from 'classnames';
 import ReturnPreviousButton from '../components/ReturnPreviousButton';
 
@@ -22,10 +23,17 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
     
     const [recipe, setRecipe] = useState(initialRecipeState);
     const [recipe_id, setRecipeId] = useState(null);
+
+    // change once login and sanctum are set up
+    const [userId, setUserId] = useState(2);
+
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [validationComplete, setValidationComplete] = useState(false);
     const [submitComplete, setSubmitComplete] = useState(false);
+
+    
+
 
     
     const handleBlur = (validationFunc, e) => {
@@ -80,13 +88,15 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
           {
           
           // console.log('test error check (no errors)');
+      
 
           var data = {
             name: recipe.name.val,
-            //description: recipe.description.val,
+            description: recipe.description.val,
             servings : recipe.servings.val,
             preptime: recipe.preptime.val,
-            cooktime: recipe.cooktime.val
+            cooktime: recipe.cooktime.val,
+            userId: userId
           };
 
           setValidationComplete(true);
@@ -130,9 +140,11 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
 
     function submitData(data)
     {
+
+
       setSubmitComplete(true);
       axiosConfig
-      .post(`http://localhost/api/recipes`, data)
+      .post(`/recipes`, data)
         .then(response => {
           setRecipeId(response.data.recipe_id);
           setIsLoading(false);
