@@ -20,6 +20,11 @@ export default function NavigationBar() {
                 Contact
             </NavLink>
         </li>  
+        <li>
+            <NavLink to="/login" activeClassName="active" exact>
+                Login
+            </NavLink>
+        </li>  
       </ul>
     </nav>
   )

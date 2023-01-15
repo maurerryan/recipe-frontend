@@ -6,6 +6,7 @@ import { validateFields } from '../validation';
 //import axiosConfig from 'axios';
 import axiosConfig from '../helpers/axiosConfig';
 import classNames from 'classnames';
+import { ClipLoader } from 'react-spinners';
 import ReturnPreviousButton from '../components/ReturnPreviousButton';
 
 
@@ -23,17 +24,12 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
     
     const [recipe, setRecipe] = useState(initialRecipeState);
     const [recipe_id, setRecipeId] = useState(null);
-
     // change once login and sanctum are set up
     const [userId, setUserId] = useState(2);
-
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [validationComplete, setValidationComplete] = useState(false);
-    const [submitComplete, setSubmitComplete] = useState(false);
-
-    
-
+    // const [validationComplete, setValidationComplete] = useState(false);
+    // const [submitComplete, setSubmitComplete] = useState(false);
 
     
     const handleBlur = (validationFunc, e) => {
@@ -72,7 +68,7 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
   
     const saveRecipe = () => {
 
-      setValidationComplete(false);
+      // setValidationComplete(false);
 
       setIsLoading(true);
 
@@ -88,7 +84,7 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
           {
           
           // console.log('test error check (no errors)');
-      
+          // console.log(userId);
 
           var data = {
             name: recipe.name.val,
@@ -99,7 +95,13 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
             userId: userId
           };
 
-          setValidationComplete(true);
+          setRecipe((prevState) => {
+            const newState = {...prevState}
+            recipe.allFieldsValidated = true;
+            return newState
+          });
+
+          // setValidationComplete(true);
           submitData(data);
           setIsLoading(true);
 
@@ -140,9 +142,12 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
 
     function submitData(data)
     {
+      setRecipe((prevState) => {
+        const newState = {...prevState}
+        recipe.submitCalled = true;
+        return newState
+      });
 
-
-      setSubmitComplete(true);
       axiosConfig
       .post(`/recipes`, data)
         .then(response => {
@@ -150,19 +155,17 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
           setIsLoading(false);
       })
         .catch(error => {
-
           console.log(error.response);
           setError(error.message);
-
+          setIsLoading(false);
+          console.log(error.response.data.errors);
           Object.keys(error.response.data.errors).forEach(function(prop) {
-              setRecipe((prevState) => {
+            setRecipe((prevState) => {
               const newState = {...prevState}
               newState[prop].error = error.response.data.errors[prop];
               return newState
             });
           });
-
-          setIsLoading(false);
       });
       
     }
@@ -172,18 +175,32 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
       <div class="rounded overflow-hidden shadow-lg">
       <img class="w-full" src={plate} alt="Plate" />
       <div class="px-6 py-4">
-                {validationComplete && submitComplete && !error && (
+
+                {isLoading && (
+
+                    <ClipLoader color="rgba(249, 115, 22, 1)" />
+                )}
+                {recipe.allFieldsValidated && !error &&(
                     <p className="text-success text-center text-green-500 text-xs italic">
                       Success, All fields are validated
                     </p>
                 )}
                 {
                   error && (
-                    <p className="text-success text-center text-red-500 text-xs italic">
+                    <p className="text-error text-center text-red-500 text-xs italic">
                       { error.toString() }
                     </p>
                   )
                 }
+                {/* {
+                  error && (
+                    <p className="text-error text-center text-red-500 text-xs italic">
+                      { error.toString() }
+                    </p>
+                  )
+                } */}
+
+                
       <div class="flex flex-wrap -mx-3 mb-6 ml-1 mr-1">
       <div class="w-full md:w-3/4 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 mt-2" for="name">
@@ -191,9 +208,9 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
         </label>
         <input
           className={classNames("appearance-none block w-full bg-gray-200 border rounded py-1 px-3 mb-1 leading-tight focus:outline-none focus:bg-white",
-          { 'border-gray-200': recipe.name.error === false },
+          { 'border-gray-200': recipe.name.error === false},
           { 'border-red-500': recipe.name.error },
-          { 'border-green-400': recipe.allFieldsValidated }
+          { 'border-green-400': recipe.allFieldsValidated && !error}
           )}  
           type="text" 
           id="name"
@@ -214,7 +231,7 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
           className={classNames("appearance-none block w-full bg-gray-200 border rounded py-1 px-3 mb-1 leading-tight focus:outline-none focus:bg-white",
           { 'border-gray-200': recipe.servings.error === false },
           { 'border-red-500': recipe.servings.error },
-          { 'border-green-400': recipe.allFieldsValidated }
+          { 'border-green-400': recipe.allFieldsValidated && !error}
           )}  
           type="text" 
           id="servings" 
@@ -235,7 +252,7 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
           className={classNames("appearance-none block w-full bg-gray-200 border rounded py-1 px-3 mb-1 leading-tight focus:outline-none focus:bg-white",
           { 'border-gray-200': recipe.description.error === false },
           { 'border-red-500': recipe.description.error },
-          { 'border-green-400': recipe.allFieldsValidated }
+          { 'border-green-400': recipe.allFieldsValidated  && !error }
           )}  
           id="description"
           name="description"
@@ -256,7 +273,7 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
           className={classNames("appearance-none block w-full bg-gray-200 border rounded py-1 px-3 mb-1 leading-tight focus:outline-none focus:bg-white",
           { 'border-gray-200': recipe.preptime.error === false },
           { 'border-red-500': recipe.preptime.error },
-          { 'border-green-400': recipe.allFieldsValidated }
+          { 'border-green-400': recipe.allFieldsValidated && !error}
           )}  
           type="text" 
           id="preptime" 
@@ -277,7 +294,7 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
           className={classNames("appearance-none block w-full bg-gray-200 border rounded py-1 px-3 mb-1 leading-tight focus:outline-none focus:bg-white",
           { 'border-gray-200': recipe.cooktime.error === false },
           { 'border-red-500': recipe.cooktime.error },
-          { 'border-green-400': recipe.allFieldsValidated }
+          { 'border-green-400': recipe.allFieldsValidated && !error }
           )}  
           type="text" 
           id="cooktime" 
@@ -292,17 +309,9 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
       </div>
       </div>
 
-      {isLoading ? (
-        <button class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-full float-right inline-flex items-center mb-4 mr-4 mt-10 ..." disabled>
-          Processing...
-          {/* <svg class="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24"></svg> */}
-        </button>
-        ) : (
-        <button class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-full float-right inline-flex items-center mb-4 mr-4 mt-10" onClick={saveRecipe}>
-          <span>Next</span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="butt" stroke-linejoin="bevel"><path d="M9 18l6-6-6-6"/></svg>
-        </button>
-        ) 
-      }
+      <button class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-full float-right inline-flex items-center mb-4 mr-4 mt-10" onClick={saveRecipe} disabled={isLoading}>
+        <span>Next</span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="butt" stroke-linejoin="bevel"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
 
       {recipe_id && (<Navigate to={`/ingredients/add/${recipe_id}`} replace={true} />)}
       <ReturnPreviousButton link={'/'}/>
@@ -312,5 +321,6 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
   
     )
   };
+
 
 export default AddRecipe;

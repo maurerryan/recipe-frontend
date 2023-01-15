@@ -295,18 +295,10 @@ import ReturnPreviousButton from '../components/ReturnPreviousButton';
         )}
 
         <ReturnPreviousButton link={`/recipe/add/${params.id}`}/>
-        
-        {isLoading ? (
-          <button class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-full float-right inline-flex items-center mb-4 mr-4 mt-10 ..." disabled>
-            Processing...
-            {/* <svg class="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24"></svg> */}
-          </button>
-          ) : (
-          <button class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-full float-right inline-flex items-center mb-4 mr-4 mt-10" onClick={handleSubmit}>
-            <span>Next</span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="butt" stroke-linejoin="bevel"><path d="M9 18l6-6-6-6"/></svg>
-          </button>
-          ) 
-        }
+
+        <button class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-full float-right inline-flex items-center mb-4 mr-4 mt-10" onClick={handleSubmit} disabled={isLoading}>
+          <span>Next</span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="butt" stroke-linejoin="bevel"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
 
         {submitComplete && (<Navigate to={`/recipe/add`} replace={true} />)}
 
