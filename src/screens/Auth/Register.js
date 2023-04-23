@@ -47,68 +47,84 @@ export default function Register() {
 
 <form onSubmit={handleSubmit(onSubmit)}>
 <div class="flex flex-wrap -mx-3 mb-6 ml-2 mr-2">
-<div class="w-full md:w-3/4 px-3 mb-6 md:mb-0">
-    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 mt-2" for="username">
-      Username
-    </label>
-    <input {...register("username", { 
-        required: true,
-        minLength: 3, 
-        maxLength: 20
-      })} 
-      className={classNames("appearance-none block w-full bg-gray-200 border rounded py-1 px-3 mb-1 leading-tight focus:outline-none focus:bg-white",
-        { 'border-gray-200': errors.username === false},
-        { 'border-red-500': errors.username }
-      )} 
-      defaultValue=""  
-      placeholder=""
-    />
-    {errors.username && errors.username.type === "required" && <p className="text-red-500 text-xs italic">This is required</p>}
-    {errors.username && errors.username.type === "minLength" && <p className="text-red-500 text-xs italic">Min length error</p>}
-    {errors.username && errors.username.type === "maxLength" && <p className="text-red-500 text-xs italic">Max length exceeded</p>}
-    {errors.username && errors.username.type === "server" && <p className="text-red-500 text-xs italic">{errors.name.message}</p>}
-  </div>
+    <div class="w-full md:w-3/4 px-3 mb-6 md:mb-0">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 mt-2" for="username">
+        Username
+        </label>
+        <input {...register("username", { 
+            required: true,
+            minLength: 3, 
+            maxLength: 20
+        })} 
+        className={classNames("appearance-none block w-full bg-gray-200 border rounded py-1 px-3 mb-1 leading-tight focus:outline-none focus:bg-white",
+            { 'border-gray-200': errors.username === false},
+            { 'border-red-500': errors.username }
+        )} 
+        defaultValue=""  
+        placeholder="Choose a username"
+        />
+        {errors.username && errors.username.type === "required" && <p className="text-red-500 text-xs italic">This is required</p>}
+        {errors.username && errors.username.type === "minLength" && <p className="text-red-500 text-xs italic">Min length error</p>}
+        {errors.username && errors.username.type === "maxLength" && <p className="text-red-500 text-xs italic">Max length exceeded</p>}
+        {errors.username && errors.username.type === "server" && <p className="text-red-500 text-xs italic">{errors.username.message}</p>}
+    </div>
 
-  <div class="w-full md:w-3/4 px-3 mt-4 mb-6 md:mb-0">
-    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="password">
-      Password
-    </label>
-    <input {...register("password", { 
-        required: true, 
-        minLength: 6,
-        maxLength: 20 
-      })} 
-      className={classNames("appearance-none block w-full bg-gray-200 border rounded py-1 px-3 mb-1 leading-tight focus:outline-none focus:bg-white",
-        { 'border-gray-200': errors.password === false},
-        { 'border-red-500': errors.password }
-      )} 
-      type="password"
-      defaultValue=""  
-      placeholder=""
-    />
-    {errors.password && errors.password.type === "required" && <p className="text-red-500 text-xs italic">This is required</p>}
-    {errors.password && errors.password.type === "minLength" && <p className="text-red-500 text-xs italic">Min length error</p>}
-    {errors.password && errors.password.type === "maxLength" && <p className="text-red-500 text-xs italic">Max length exceeded</p>}
-    {errors.password && errors.password.type === "server" && <p className="text-red-500 text-xs italic">{errors.name.message}</p>}
+    <div class="w-full md:w-3/4 px-3 mt-4 mb-6 md:mb-0">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="password">
+        Password
+        </label>
+        <input {...register("password", { 
+            required: true, 
+            minLength: 6,
+            maxLength: 20 
+        })} 
+        className={classNames("appearance-none block w-full bg-gray-200 border rounded py-1 px-3 mb-1 leading-tight focus:outline-none focus:bg-white",
+            { 'border-gray-200': errors.password === false},
+            { 'border-red-500': errors.password }
+        )} 
+        type="password"
+        defaultValue=""  
+        placeholder="Choose a password"
+        />
+        {errors.password && errors.password.type === "required" && <p className="text-red-500 text-xs italic">This is required</p>}
+        {errors.password && errors.password.type === "minLength" && <p className="text-red-500 text-xs italic">Min length error</p>}
+        {errors.password && errors.password.type === "maxLength" && <p className="text-red-500 text-xs italic">Max length exceeded</p>}
+        {errors.password && errors.password.type === "server" && <p className="text-red-500 text-xs italic">{errors.password.message}</p>}
+    </div>
+
+    <div class="w-full md:w-3/4 px-3 mt-4 mb-6 md:mb-0">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="password">
+        Confirm Password
+        </label>
+        <input {...register("password2", { 
+            required: true, 
+            minLength: 6,
+            maxLength: 20 
+        })} 
+        className={classNames("appearance-none block w-full bg-gray-200 border rounded py-1 px-3 mb-1 leading-tight focus:outline-none focus:bg-white",
+            { 'border-gray-200': errors.password === false},
+            { 'border-red-500': errors.password }
+        )} 
+        type="password"
+        defaultValue=""  
+        placeholder="Confirm password"
+        />
+        {errors.password2 && errors.password2.type === "required" && <p className="text-red-500 text-xs italic">This is required</p>}
+        {errors.password2 && errors.password2.type === "minLength" && <p className="text-red-500 text-xs italic">Min length error</p>}
+        {errors.password2 && errors.password2.type === "maxLength" && <p className="text-red-500 text-xs italic">Max length exceeded</p>}
+        {errors.password2 && errors.password2.type === "server" && <p className="text-red-500 text-xs italic">{errors.password.message}</p>}
 
     <button class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-full inline-flex items-left mt-4" type="submit" disabled={isLoading}>
-        Login
+        Register
     </button>
-    {/* {errors.name && errors.name.type === "required" && <p className="text-red-500 text-xs italic">This is required</p>}
-    {errors.name && errors.name.type === "maxLength" && <p className="text-red-500 text-xs italic">Max length exceeded</p>}
-    {errors.name && errors.name.type === "server" && <p className="text-red-500 text-xs italic">{errors.name.message}</p>} */}
-  </div>
-    {/* <div class="w-full md:w-1/2 px-3">
-    
     </div>
-    <div class="w-full md:w-1/2 px-3">
-      
-    </div> */}
-    </div>
-    </form>
-    <button onClick={() => navigate('/login')}>Login</button>
-    </div>
-    </div>
+
+
+</div>
+</form>
+<button onClick={() => navigate('/login')}>Login</button>
+</div>
+</div>
 
 
 
